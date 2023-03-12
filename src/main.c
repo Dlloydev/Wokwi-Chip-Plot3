@@ -258,13 +258,15 @@ void chip_timer_event(void *user_data) {
   if (chip->sample_ad2 < chip->sample_min2) chip->sample_min2 = chip->sample_ad2;
   if (chip->sample_ad2 > chip->sample_max2) chip->sample_max2 = chip->sample_ad2;
 
-  float decay = chip->sample_us * 0.000001;  // slow decay
+/*
+  float decay = chip->sample_us * 0.000001;  // slow analog decay
   chip->sample_min0 += decay ;
   chip->sample_min1 += decay;
   chip->sample_min2 += decay;
   chip->sample_max0 -= decay;
   chip->sample_max1 -= decay;
   chip->sample_max2 -= decay;
+  */
 
   if (attr_read(chip->trigger_attr) == 2) { // falling
     if (chip->plot_x < chip->fb_w - 1) draw_plot(chip);

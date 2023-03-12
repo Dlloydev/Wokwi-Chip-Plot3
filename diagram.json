@@ -27,5 +27,5 @@
     [ "vcc1:VCC", "btn1:1.l", "red", [ "v0" ] ],
     [ "ldr1:AO", "chip-plot3-1:AD0", "green", [ "h38.4", "v-96.7" ] ]
   ],
-  "dependencies": { "chip-plot3": "github:Dlloydev/Wokwi-Chip-Plot3@1.0.0" }
+  "dependencies": { "chip-plot3": "github:Dlloydev/Wokwi-Chip-Plot3@1.0.1" }
 }
