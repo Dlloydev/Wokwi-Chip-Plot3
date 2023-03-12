@@ -6,7 +6,7 @@ Plot up to 3 Analog Signals.
 
 - Plotter `Sample Time μs` range is 50-10000 µs (default 100 µs).
 -  Width of plot is 250 samples.
-- `AD0 Trigger` modes are Off (`0`) Rising (default) ⬆ and Falling ⬇
+- `A0 Trigger` modes are Off (`0`) Rising (default) ⬆ and Falling ⬇
 - Displays peak volts`Vmax`, and minimum volts `Vmin`
 - Displays  Sample Time `us` and Capture Time `ms`
 
@@ -18,9 +18,9 @@ Plot up to 3 Analog Signals.
 
 | Name | Description                                        |
 | ---- | -------------------------------------------------- |
-| AD0  | Input  configured as ANALOG, also the trigger pin. |
-| AD1  | Input  configured as ANALOG.                       |
-| AD2  | Input  configured as ANALOG.                       |
+| A0   | Input  configured as ANALOG, also the trigger pin. |
+| A1   | Input  configured as ANALOG.                       |
+| A2   | Input  configured as ANALOG.                       |
 
 ## Usage
 
