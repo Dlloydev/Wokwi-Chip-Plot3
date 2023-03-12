@@ -1,0 +1,36 @@
+{
+  "name": "Plot3",
+  "author": "David Lloyd",
+  "license": "MIT",
+  "docs": "https://github.com/Dlloydev/Wokwi-Chip-Plot3/blob/main/docs/README.md",
+  "pins": [
+    "AD0",
+    "AD1",
+    "AD2",
+    "",
+    "",
+    ""
+  ],
+  "display": {
+    "width": 252,
+    "height": 118
+  },
+  "controls": [
+    {
+      "id": "sampletime",
+      "label": "Sample Time μs",
+      "type": "range",
+      "min": 50,
+      "max": 10000,
+      "step": 50
+    },
+    {
+      "id": "trigger",
+      "label": "AD0 Trigger ⭘ ⬆ ⬇",
+      "type": "range",
+      "min": 0,
+      "max": 2,
+      "step": 1
+    }
+  ]
+}

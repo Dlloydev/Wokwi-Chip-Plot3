@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "author": "David Lloyd",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "chip-plot3", "id": "chip-plot3-1", "top": -574.98, "left": 42.47, "attrs": {} },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": -589,
+      "left": -76.8,
+      "attrs": { "color": "green", "label": "Try me!" }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr1",
+      "top": -505.6,
+      "left": -181.6,
+      "attrs": {}
+    },
+    { "type": "wokwi-gnd", "id": "gnd1", "top": -441.6, "left": -0.6, "attrs": {} },
+    { "type": "wokwi-vcc", "id": "vcc1", "top": -613.64, "left": -115.2, "attrs": {} }
+  ],
+  "connections": [
+    [ "ldr1:VCC", "btn1:1.l", "red", [ "h19.2", "v-28.8", "h-115.2", "v-57.6" ] ],
+    [ "ldr1:GND", "gnd1:GND", "black", [ "h19.2", "v38" ] ],
+    [ "vcc1:VCC", "btn1:1.l", "red", [ "v0" ] ],
+    [ "ldr1:AO", "chip-plot3-1:AD0", "green", [ "h38.4", "v-96.7" ] ]
+  ],
+  "dependencies": { "chip-plot3": "github:Dlloydev/Wokwi-Chip-Plot3@1.0.0" }
+}
