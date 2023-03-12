@@ -3,7 +3,7 @@
   "author": "David Lloyd",
   "editor": "wokwi",
   "parts": [
-    { "type": "chip-plot3", "id": "chip-plot3-1", "top": -574.98, "left": 42.47, "attrs": {} },
+    { "type": "chip-analog-plot3", "id": "chip-analog-plot3-1", "top": -574.98, "left": 42.47, "attrs": {} },
     {
       "type": "wokwi-pushbutton",
       "id": "btn1",
@@ -27,5 +27,5 @@
     [ "vcc1:VCC", "btn1:1.l", "red", [ "v0" ] ],
     [ "ldr1:AO", "chip-plot3-1:AD0", "green", [ "h38.4", "v-96.7" ] ]
   ],
-  "dependencies": { "chip-plot3": "github:Dlloydev/Wokwi-Chip-Plot3@1.0.1" }
+  "dependencies": { "chip-analog-plot3": "github:Dlloydev/Wokwi-Chip-Plot3@1.0.2" }
 }

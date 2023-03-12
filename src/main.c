@@ -1,4 +1,4 @@
-// Plot3 Chip
+// Analog Plot3 Chip
 // by David Lloyd, March 2023.
 
 #include "wokwi-api.h"
@@ -144,10 +144,10 @@ typedef struct {
 } rgba_t;
 
 typedef struct {
-  pin_t pin_AD0;
-  pin_t pin_AD1;
-  pin_t pin_AD2;
-  pin_t pin_AD3;
+  pin_t pin_A0;
+  pin_t pin_A1;
+  pin_t pin_A2;
+  pin_t pin_A3;
   uint32_t sampletime_attr;
   uint32_t trigger_attr;
   buffer_t framebuffer;
@@ -156,12 +156,12 @@ typedef struct {
   uint32_t serial_h;
   uint32_t serial_x;
   uint32_t serial_y;
-  float sample_ad0;
-  float sample_last_ad0;
-  float sample_ad1;
-  float sample_last_ad1;
-  float sample_ad2;
-  float sample_last_ad2;
+  float sample_a0;
+  float sample_last_a0;
+  float sample_a1;
+  float sample_last_a1;
+  float sample_a2;
+  float sample_last_a2;
   float sample_max0;
   float sample_min0;
   float sample_max1;
@@ -193,10 +193,9 @@ static void fill_plot(chip_state_t *chip);
 
 void chip_init(void) {
   chip_state_t *chip = malloc(sizeof(chip_state_t));
-  chip->pin_AD0 = pin_init("AD0", ANALOG);
-  chip->pin_AD1 = pin_init("AD1", ANALOG);
-  chip->pin_AD2 = pin_init("AD2", ANALOG);
-  chip->pin_AD3 = pin_init("AD3", ANALOG);
+  chip->pin_A0 = pin_init("A0", ANALOG);
+  chip->pin_A1 = pin_init("A1", ANALOG);
+  chip->pin_A2 = pin_init("A2", ANALOG);
   chip->sampletime_attr = attr_init("sampletime", 100);
   chip->trigger_attr = attr_init("trigger", 1);
 
@@ -248,36 +247,26 @@ void chip_init(void) {
 
 void chip_timer_event(void *user_data) {
   chip_state_t *chip = (chip_state_t*)user_data;
-  chip->sample_ad0 = pin_adc_read(chip->pin_AD0);
-  if (chip->sample_ad0 < chip->sample_min0) chip->sample_min0 = chip->sample_ad0;
-  if (chip->sample_ad0 > chip->sample_max0) chip->sample_max0 = chip->sample_ad0;
-  chip->sample_ad1 = pin_adc_read(chip->pin_AD1);
-  if (chip->sample_ad1 < chip->sample_min1) chip->sample_min1 = chip->sample_ad1;
-  if (chip->sample_ad1 > chip->sample_max1) chip->sample_max1 = chip->sample_ad1;
-  chip->sample_ad2 = pin_adc_read(chip->pin_AD2);
-  if (chip->sample_ad2 < chip->sample_min2) chip->sample_min2 = chip->sample_ad2;
-  if (chip->sample_ad2 > chip->sample_max2) chip->sample_max2 = chip->sample_ad2;
-
-/*
-  float decay = chip->sample_us * 0.000001;  // slow analog decay
-  chip->sample_min0 += decay ;
-  chip->sample_min1 += decay;
-  chip->sample_min2 += decay;
-  chip->sample_max0 -= decay;
-  chip->sample_max1 -= decay;
-  chip->sample_max2 -= decay;
-  */
+  chip->sample_a0 = pin_adc_read(chip->pin_A0);
+  if (chip->sample_a0 < chip->sample_min0) chip->sample_min0 = chip->sample_a0;
+  if (chip->sample_a0 > chip->sample_max0) chip->sample_max0 = chip->sample_a0;
+  chip->sample_a1 = pin_adc_read(chip->pin_A1);
+  if (chip->sample_a1 < chip->sample_min1) chip->sample_min1 = chip->sample_a1;
+  if (chip->sample_a1 > chip->sample_max1) chip->sample_max1 = chip->sample_a1;
+  chip->sample_a2 = pin_adc_read(chip->pin_A2);
+  if (chip->sample_a2 < chip->sample_min2) chip->sample_min2 = chip->sample_a2;
+  if (chip->sample_a2 > chip->sample_max2) chip->sample_max2 = chip->sample_a2;
 
   if (attr_read(chip->trigger_attr) == 2) { // falling
     if (chip->plot_x < chip->fb_w - 1) draw_plot(chip);
-    if ((chip->plot_x == chip->fb_w - 1) && (chip->sample_ad0 < chip->sample_last_ad0)) draw_plot(chip);
+    if ((chip->plot_x == chip->fb_w - 1) && (chip->sample_a0 < chip->sample_last_a0)) draw_plot(chip);
   }
   else if (attr_read(chip->trigger_attr) == 1) { // rising
     if (chip->plot_x < chip->fb_w - 1) draw_plot(chip);
-    if ((chip->plot_x == chip->fb_w - 1) && (chip->sample_ad0 > chip->sample_last_ad0)) draw_plot(chip);
+    if ((chip->plot_x == chip->fb_w - 1) && (chip->sample_a0 > chip->sample_last_a0)) draw_plot(chip);
   }
   else  draw_plot(chip); // auto trigger = 0 (off)
-  chip->sample_last_ad0 = chip->sample_ad0;
+  chip->sample_last_a0 = chip->sample_a0;
 
   if (chip->sample_us != attr_read(chip->sampletime_attr)) {
     chip->sample_us = attr_read(chip->sampletime_attr);
@@ -315,7 +304,7 @@ void draw_string(chip_state_t *chip) {
 void draw_plot(chip_state_t *chip) {
   rgba_t color;
 
-  chip->plot_y0 = 24 - chip->sample_ad0 / 5.0 * 20;
+  chip->plot_y0 = 24 - chip->sample_a0 / 5.0 * 20;
   for (int y = 4; y < 26; y += 1) {
    color = ((chip->plot_y0 >= 4 && chip->plot_y0 <= 26) &&
              (y < chip->plot_y0 && y < chip->plot_py0) ||
@@ -325,7 +314,7 @@ void draw_plot(chip_state_t *chip) {
     buffer_write(chip->framebuffer, (chip->fb_w * 4 * y) + (chip->plot_x * 4), &color, sizeof(color));
   }
 
-  chip->plot_y1 = 50 - chip->sample_ad1 / 5.0 * 20;
+  chip->plot_y1 = 50 - chip->sample_a1 / 5.0 * 20;
   for (int y = 30; y < 52; y += 1) {
    color = ((chip->plot_y1 >= 30 && chip->plot_y1 <= 52) &&
              (y < chip->plot_y1 && y < chip->plot_py1) ||
@@ -335,7 +324,7 @@ void draw_plot(chip_state_t *chip) {
     buffer_write(chip->framebuffer, (chip->fb_w * 4 * y) + (chip->plot_x * 4), &color, sizeof(color));
   }
 
-  chip->plot_y2 = 76 - chip->sample_ad2 / 5.0 * 20;
+  chip->plot_y2 = 76 - chip->sample_a2 / 5.0 * 20;
   for (int y = 56; y < 78; y += 1) {
    color = ((chip->plot_y2 >= 56 && chip->plot_y2 <= 78) &&
              (y < chip->plot_y2 && y < chip->plot_py2) ||

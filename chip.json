@@ -1,12 +1,12 @@
 {
-  "name": "Plot3",
+  "name": "Analog Plot3",
   "author": "David Lloyd",
   "license": "MIT",
   "docs": "https://github.com/Dlloydev/Wokwi-Chip-Plot3/blob/main/docs/README.md",
   "pins": [
-    "AD0",
-    "AD1",
-    "AD2",
+    "A0",
+    "A1",
+    "A2",
     "",
     "",
     ""
@@ -26,7 +26,7 @@
     },
     {
       "id": "trigger",
-      "label": "AD0 Trigger ⭘ ⬆ ⬇",
+      "label": "A0 Trigger ⭘ ⬆ ⬇",
       "type": "range",
       "min": 0,
       "max": 2,
